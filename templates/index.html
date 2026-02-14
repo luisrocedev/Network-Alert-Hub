@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Network Alert Hub · PSP</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <section class="panel hero">
+      <div>
+        <h1>Network Alert Hub</h1>
+        <p>Actividad final de conexión por red con <strong>TCP sockets + WebSockets + SMTP</strong> y persistencia en SQLite.</p>
+      </div>
+      <div class="badge-group">
+        <span class="badge">WS: {{ ws_port }}</span>
+        <span class="badge">TCP: {{ tcp_port }}</span>
+      </div>
+    </section>
+
+    <section class="panel controls">
+      <h2>Crear evento manual (HTTP API)</h2>
+      <div class="grid form-grid">
+        <label>Origen
+          <input id="source" type="text" value="panel-web" maxlength="80" />
+        </label>
+        <label>Severidad
+          <select id="severity">
+            <option value="info">info</option>
+            <option value="warning">warning</option>
+            <option value="error">error</option>
+            <option value="critical">critical</option>
+          </select>
+        </label>
+      </div>
+      <label>Mensaje
+        <textarea id="message" rows="3" maxlength="300">Conexión de prueba desde panel.</textarea>
+      </label>
+      <div class="actions">
+        <button id="sendBtn">Enviar evento</button>
+        <button id="reloadBtn" class="secondary">Recargar datos</button>
+        <span id="liveState" class="live">WS desconectado</span>
+      </div>
+      <p class="hint">Tip: también puedes enviar eventos por socket TCP en formato JSON de una línea.</p>
+    </section>
+
+    <section class="kpis">
+      <article class="kpi"><span>Total eventos</span><strong id="kpiTotal">0</strong></article>
+      <article class="kpi"><span>Critical</span><strong id="kpiCritical">0</strong></article>
+      <article class="kpi"><span>Error</span><strong id="kpiError">0</strong></article>
+      <article class="kpi"><span>Email OK/Fail</span><strong id="kpiEmail">0 / 0</strong></article>
+    </section>
+
+    <section class="panel two-col">
+      <div>
+        <h2>Eventos en tiempo real</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th><th>Fecha</th><th>Origen</th><th>Severidad</th><th>Canal</th><th>Mensaje</th>
+              </tr>
+            </thead>
+            <tbody id="eventsBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h2>Historial de alertas por email</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th><th>Evento</th><th>Fecha</th><th>Estado</th><th>Destinatario</th><th>Detalle</th>
+              </tr>
+            </thead>
+            <tbody id="emailsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    window.APP_CONFIG = {
+      wsPort: {{ ws_port }},
+    };
+  </script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
