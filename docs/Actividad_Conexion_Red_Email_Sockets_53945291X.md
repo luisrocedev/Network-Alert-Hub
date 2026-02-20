@@ -32,23 +32,23 @@ La elección de Python como lenguaje se justifica por su soporte nativo para soc
 
 La arquitectura multitransporte permite demostrar simultáneamente:
 
-| Concepto PSP | Implementación |
-|---|---|
-| Comunicación TCP | `socketserver.ThreadingMixIn` + `StreamRequestHandler` |
-| Comunicación asíncrona | `websockets.serve()` + `asyncio` event loop |
-| Envío de email | `smtplib.SMTP` con STARTTLS y autenticación |
-| Concurrencia | Hilos daemon para TCP, WS y SMTP |
-| Persistencia | SQLite con modelo relacional (events ↔ email_alerts) |
+| Concepto PSP           | Implementación                                         |
+| ---------------------- | ------------------------------------------------------ |
+| Comunicación TCP       | `socketserver.ThreadingMixIn` + `StreamRequestHandler` |
+| Comunicación asíncrona | `websockets.serve()` + `asyncio` event loop            |
+| Envío de email         | `smtplib.SMTP` con STARTTLS y autenticación            |
+| Concurrencia           | Hilos daemon para TCP, WS y SMTP                       |
+| Persistencia           | SQLite con modelo relacional (events ↔ email_alerts)   |
 
 ### 1.4 Tecnologías utilizadas
 
-| Capa | Stack |
-|---|---|
-| Backend | Python 3.12 · Flask 3.x · SQLite 3 |
-| Sockets | `socketserver.ThreadingMixIn` · `socketserver.StreamRequestHandler` |
-| WebSocket | `websockets` 12.x · `asyncio` |
-| Email | `smtplib` · `email.mime.text.MIMEText` · STARTTLS |
-| Frontend | HTML5 · CSS3 (custom properties, dark mode) · JavaScript ES2022 |
+| Capa      | Stack                                                               |
+| --------- | ------------------------------------------------------------------- |
+| Backend   | Python 3.12 · Flask 3.x · SQLite 3                                  |
+| Sockets   | `socketserver.ThreadingMixIn` · `socketserver.StreamRequestHandler` |
+| WebSocket | `websockets` 12.x · `asyncio`                                       |
+| Email     | `smtplib` · `email.mime.text.MIMEText` · STARTTLS                   |
+| Frontend  | HTML5 · CSS3 (custom properties, dark mode) · JavaScript ES2022     |
 
 ---
 
@@ -253,12 +253,12 @@ def register_event(payload: EventPayload) -> dict:
 
 ### 2.6 API REST (Flask)
 
-| Endpoint | Método | Descripción |
-|---|---|---|
-| `/api/events?limit=N` | GET | Últimos N eventos + historial de emails |
-| `/api/events` | POST | Crear evento manual (JSON: source, severity, message) |
-| `/api/stats` | GET | KPIs: total, por severidad, por canal, email OK/fail |
-| `/api/config` | GET | Puertos configurados (HTTP, WS, TCP) |
+| Endpoint              | Método | Descripción                                           |
+| --------------------- | ------ | ----------------------------------------------------- |
+| `/api/events?limit=N` | GET    | Últimos N eventos + historial de emails               |
+| `/api/events`         | POST   | Crear evento manual (JSON: source, severity, message) |
+| `/api/stats`          | GET    | KPIs: total, por severidad, por canal, email OK/fail  |
+| `/api/config`         | GET    | Puertos configurados (HTTP, WS, TCP)                  |
 
 ### 2.7 Cliente TCP de prueba
 
@@ -291,32 +291,32 @@ Las ponderaciones `[50, 28, 16, 6]` simulan un escenario realista donde la mayor
 
 El frontend se divide en **5 pestañas** con un sistema de tabs por `data-tab`:
 
-| Pestaña | Contenido |
-|---|---|
-| **Dashboard** | Mini-tablas de últimos 5 eventos y últimas 5 alertas email |
-| **Crear evento** | Formulario con origen, severidad, mensaje + contador de caracteres |
-| **Eventos** | Tabla completa con búsqueda en vivo + badges de canal y severidad |
-| **Alertas email** | Historial de envíos SMTP con estado (sent/failed/skipped) |
-| **Auditoría** | Cards con distribución numérica por severidad, canal y estado email |
+| Pestaña           | Contenido                                                           |
+| ----------------- | ------------------------------------------------------------------- |
+| **Dashboard**     | Mini-tablas de últimos 5 eventos y últimas 5 alertas email          |
+| **Crear evento**  | Formulario con origen, severidad, mensaje + contador de caracteres  |
+| **Eventos**       | Tabla completa con búsqueda en vivo + badges de canal y severidad   |
+| **Alertas email** | Historial de envíos SMTP con estado (sent/failed/skipped)           |
+| **Auditoría**     | Cards con distribución numérica por severidad, canal y estado email |
 
 **14 mejoras v2 implementadas:**
 
-| # | Mejora | Implementación |
-|---|---|---|
-| 1 | Dark mode | Toggle + `data-theme` + `localStorage` |
-| 2 | Toasts | 4 tonos con animación slideDown + fadeOut |
-| 3 | Confirm overlay | Promise-based con `backdrop-filter: blur(4px)` |
-| 4 | Dashboard con KPIs | 6 tarjetas con borde semántico (purple/red/amber/green/cyan/blue) |
-| 5 | Status dot | Heartbeat cada 5s con clase `online`/`offline` + animación pulse |
-| 6 | Badges semánticos | Pills de severidad + badges de canal (TCP azul, HTTP verde) |
-| 7 | Contador de caracteres | `input` event sobre textarea con feedback `0 / 300` |
-| 8 | Export JSON | Blob + `URL.createObjectURL` + descarga automática |
-| 9 | Import JSON | FileReader + confirm + creación secuencial de eventos |
-| 10 | Seed de datos | 5 eventos predefinidos con severidades variadas |
-| 11 | Búsqueda en vivo | Filtro por texto sobre arrays cacheados |
-| 12 | Responsive | 3 breakpoints: 1100px (tablet), 700px (móvil) |
-| 13 | Empty states | Mensajes informativos cuando las tablas no tienen datos |
-| 14 | Auto-refresh | `setInterval(loadAll, 4000)` |
+| #   | Mejora                 | Implementación                                                    |
+| --- | ---------------------- | ----------------------------------------------------------------- |
+| 1   | Dark mode              | Toggle + `data-theme` + `localStorage`                            |
+| 2   | Toasts                 | 4 tonos con animación slideDown + fadeOut                         |
+| 3   | Confirm overlay        | Promise-based con `backdrop-filter: blur(4px)`                    |
+| 4   | Dashboard con KPIs     | 6 tarjetas con borde semántico (purple/red/amber/green/cyan/blue) |
+| 5   | Status dot             | Heartbeat cada 5s con clase `online`/`offline` + animación pulse  |
+| 6   | Badges semánticos      | Pills de severidad + badges de canal (TCP azul, HTTP verde)       |
+| 7   | Contador de caracteres | `input` event sobre textarea con feedback `0 / 300`               |
+| 8   | Export JSON            | Blob + `URL.createObjectURL` + descarga automática                |
+| 9   | Import JSON            | FileReader + confirm + creación secuencial de eventos             |
+| 10  | Seed de datos          | 5 eventos predefinidos con severidades variadas                   |
+| 11  | Búsqueda en vivo       | Filtro por texto sobre arrays cacheados                           |
+| 12  | Responsive             | 3 breakpoints: 1100px (tablet), 700px (móvil)                     |
+| 13  | Empty states           | Mensajes informativos cuando las tablas no tienen datos           |
+| 14  | Auto-refresh           | `setInterval(loadAll, 4000)`                                      |
 
 ---
 
@@ -333,6 +333,7 @@ python app.py
 ```
 
 Se inician tres servicios simultáneamente:
+
 - HTTP panel en `http://127.0.0.1:5060`
 - WebSocket en `ws://127.0.0.1:8767`
 - TCP ingesta en `127.0.0.1:5090`
@@ -356,6 +357,7 @@ Enviado: {'source': 'switch-planta2', 'severity': 'error', 'message': 'Microcort
 #### Paso 3: Visualización en tiempo real
 
 Al abrir el panel web, se observa:
+
 - Los **KPIs se actualizan** automáticamente con los contadores por severidad.
 - La tabla de **eventos muestra en tiempo real** cada nuevo evento recibido por WS.
 - Los eventos de severidad `error` y `critical` disparan intentos de email registrados en la pestaña de alertas.
@@ -373,6 +375,7 @@ Desde la pestaña "Crear evento" se puede enviar un evento `critical` manualment
 ```
 
 Este evento:
+
 1. Se persiste en SQLite.
 2. Se difunde a todos los clientes WS conectados.
 3. Dispara un intento de email (registrado como `sent`, `failed` o `skipped`).
@@ -417,32 +420,39 @@ Cliente TCP / HTTP API
 ### 3.3 Protocolo TCP: formato de mensajes
 
 **Request** (cliente → servidor, una línea JSON):
+
 ```json
-{"source":"router-core","severity":"warning","message":"Latencia elevada en eth0"}
+{
+  "source": "router-core",
+  "severity": "warning",
+  "message": "Latencia elevada en eth0"
+}
 ```
 
 **Response** (servidor → cliente, una línea JSON):
+
 ```json
-{"ok":true,"event_id":42}
+{ "ok": true, "event_id": 42 }
 ```
 
 **Error**:
+
 ```json
-{"ok":false,"error":"invalid_json"}
+{ "ok": false, "error": "invalid_json" }
 ```
 
 ### 3.4 Configuración SMTP para entornos reales
 
 El sistema lee variables de entorno para la configuración SMTP:
 
-| Variable | Ejemplo | Descripción |
-|---|---|---|
-| `SMTP_HOST` | `smtp.gmail.com` | Servidor SMTP |
-| `SMTP_PORT` | `587` | Puerto (STARTTLS) |
-| `SMTP_USER` | `admin@empresa.com` | Usuario de autenticación |
-| `SMTP_PASS` | `app_password` | Contraseña o App Password |
-| `SMTP_FROM` | `alertas@empresa.com` | Remitente |
-| `SMTP_TO` | `noc@empresa.com` | Destinatario de alertas |
+| Variable    | Ejemplo               | Descripción               |
+| ----------- | --------------------- | ------------------------- |
+| `SMTP_HOST` | `smtp.gmail.com`      | Servidor SMTP             |
+| `SMTP_PORT` | `587`                 | Puerto (STARTTLS)         |
+| `SMTP_USER` | `admin@empresa.com`   | Usuario de autenticación  |
+| `SMTP_PASS` | `app_password`        | Contraseña o App Password |
+| `SMTP_FROM` | `alertas@empresa.com` | Remitente                 |
+| `SMTP_TO`   | `noc@empresa.com`     | Destinatario de alertas   |
 
 Si alguna variable falta, el sistema registra el intento como `skipped` sin interrumpir el servicio.
 
@@ -450,13 +460,14 @@ Si alguna variable falta, el sistema registra el intento como `skipped` sin inte
 
 El sistema gestiona tres hilos daemon principales:
 
-| Hilo | Función | Comunicación |
-|---|---|---|
-| `tcp_server_thread` | Sirve conexiones TCP entrantes | `register_event()` → `state_lock` |
-| `ws_server_thread` | Event loop asyncio para WS | `broadcast()` → `ws_lock` |
-| Hilos SMTP (bajo demanda) | Envío de emails | `insert_email_log()` → `state_lock` |
+| Hilo                      | Función                        | Comunicación                        |
+| ------------------------- | ------------------------------ | ----------------------------------- |
+| `tcp_server_thread`       | Sirve conexiones TCP entrantes | `register_event()` → `state_lock`   |
+| `ws_server_thread`        | Event loop asyncio para WS     | `broadcast()` → `ws_lock`           |
+| Hilos SMTP (bajo demanda) | Envío de emails                | `insert_email_log()` → `state_lock` |
 
 Se utilizan dos locks:
+
 - **`state_lock`** (`threading.Lock`) — Protege las métricas en memoria (`tcp_messages`, `http_messages`, `email_sent_ok`, `email_sent_fail`).
 - **`ws_lock`** (`threading.Lock`) — Protege el conjunto de clientes WebSocket conectados.
 
@@ -476,14 +487,14 @@ El proyecto **Network Alert Hub** cumple integralmente con los requisitos de la 
 
 ### 4.2 Competencias demostradas
 
-| Competencia | Evidencia |
-|---|---|
-| Programación de sockets | TCP `StreamRequestHandler` + WebSocket `asyncio` |
-| Concurrencia | 3 hilos daemon + 2 locks + hilos SMTP bajo demanda |
-| Servicios de red | Integración SMTP con STARTTLS y auditoría |
-| Persistencia de datos | SQLite con modelo relacional y trazabilidad |
-| Desarrollo web full-stack | Flask REST API + SPA con JS vanilla |
-| Diseño UI/UX | Dark mode, responsive, toasts, confirm, badges semánticos |
+| Competencia               | Evidencia                                                 |
+| ------------------------- | --------------------------------------------------------- |
+| Programación de sockets   | TCP `StreamRequestHandler` + WebSocket `asyncio`          |
+| Concurrencia              | 3 hilos daemon + 2 locks + hilos SMTP bajo demanda        |
+| Servicios de red          | Integración SMTP con STARTTLS y auditoría                 |
+| Persistencia de datos     | SQLite con modelo relacional y trazabilidad               |
+| Desarrollo web full-stack | Flask REST API + SPA con JS vanilla                       |
+| Diseño UI/UX              | Dark mode, responsive, toasts, confirm, badges semánticos |
 
 ### 4.3 Posibles extensiones futuras
 
@@ -502,19 +513,19 @@ Este proyecto ha sido especialmente enriquecedor por la necesidad de coordinar t
 
 ## Anexo: Tabla resumen de mejoras v2
 
-| # | Mejora | Archivo | Técnica |
-|---|---|---|---|
-| 1 | Dark mode | styles.css + app.js | `[data-theme="dark"]` + `localStorage` |
-| 2 | Toasts | styles.css + app.js | Animaciones CSS + DOM dinámico |
-| 3 | Confirm overlay | index.html + app.js | Promise + `backdrop-filter` |
-| 4 | 6 KPIs semánticos | index.html + styles.css | `border-left-color` por categoría |
-| 5 | Status dot | styles.css + app.js | `fetch('/api/stats')` + clase toggle |
-| 6 | Badges canal/severidad | styles.css + app.js | `.badge-channel` + `.pill` |
-| 7 | Char counter | index.html + app.js | `input` event sobre `<textarea>` |
-| 8 | Export JSON | app.js | `Blob` + `URL.createObjectURL` |
-| 9 | Import JSON | app.js | `FileReader` + `nousConfirm` |
-| 10 | Seed data | app.js | Array predefinido + POST secuencial |
-| 11 | Búsqueda en vivo | app.js | `Array.filter` sobre caché |
-| 12 | Responsive | styles.css | `@media` 1100px + 700px |
-| 13 | Empty states | app.js + styles.css | `.empty-state` centrado |
-| 14 | Auto-refresh | app.js | `setInterval(loadAll, 4000)` |
+| #   | Mejora                 | Archivo                 | Técnica                                |
+| --- | ---------------------- | ----------------------- | -------------------------------------- |
+| 1   | Dark mode              | styles.css + app.js     | `[data-theme="dark"]` + `localStorage` |
+| 2   | Toasts                 | styles.css + app.js     | Animaciones CSS + DOM dinámico         |
+| 3   | Confirm overlay        | index.html + app.js     | Promise + `backdrop-filter`            |
+| 4   | 6 KPIs semánticos      | index.html + styles.css | `border-left-color` por categoría      |
+| 5   | Status dot             | styles.css + app.js     | `fetch('/api/stats')` + clase toggle   |
+| 6   | Badges canal/severidad | styles.css + app.js     | `.badge-channel` + `.pill`             |
+| 7   | Char counter           | index.html + app.js     | `input` event sobre `<textarea>`       |
+| 8   | Export JSON            | app.js                  | `Blob` + `URL.createObjectURL`         |
+| 9   | Import JSON            | app.js                  | `FileReader` + `nousConfirm`           |
+| 10  | Seed data              | app.js                  | Array predefinido + POST secuencial    |
+| 11  | Búsqueda en vivo       | app.js                  | `Array.filter` sobre caché             |
+| 12  | Responsive             | styles.css              | `@media` 1100px + 700px                |
+| 13  | Empty states           | app.js + styles.css     | `.empty-state` centrado                |
+| 14  | Auto-refresh           | app.js                  | `setInterval(loadAll, 4000)`           |

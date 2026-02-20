@@ -28,25 +28,25 @@ El sistema recibe eventos de cualquier fuente externa (sensores, routers, script
 
 ## ✨ Características principales
 
-| Categoría | Funcionalidad |
-|---|---|
-| 📡 **Socket TCP** | Ingesta síncrona de eventos JSON desde cualquier cliente TCP |
-| 🔌 **WebSocket** | Difusión asíncrona en tiempo real al panel web con reconexión automática |
-| 📧 **SMTP** | Alertas automáticas por email para eventos `error` y `critical` con auditoría |
-| 🗄️ **Persistencia** | SQLite con tablas `events` + `email_alerts` y trazabilidad completa |
-| 📊 **Dashboard** | 5 pestañas: Dashboard · Crear evento · Eventos · Alertas email · Auditoría |
-| 🎯 **6 KPIs** | Total · Critical · Error · Warning · Info · Email OK/Fail con bordes semánticos |
-| 🌙 **Dark mode** | Toggle en toolbar con persistencia en `localStorage` |
-| 🔔 **Toasts** | Notificaciones contextuales: success · error · warning · info |
-| ⚠️ **Confirm overlay** | Diálogo personalizado con `backdrop-filter` para acciones destructivas |
-| 📦 **Export JSON** | Descarga completa de eventos + alertas email + estadísticas |
-| 📥 **Import JSON** | Restauración de eventos desde archivo con validación |
-| 🎲 **Seed de datos** | 5 eventos de demostración inyectados con un clic |
-| 🔎 **Búsqueda en vivo** | Filtro instantáneo en tablas de eventos y alertas email |
-| 🏷️ **Badges semánticos** | Pills de severidad (info/warning/error/critical) + badges de canal (TCP/HTTP) |
-| 📡 **Status dot** | Indicador de salud del backend con heartbeat automático |
-| 📱 **Responsive** | 3 breakpoints: escritorio (6 KPIs) · tablet (3) · móvil (2) |
-| ♻️ **Auto-refresh** | Refresco automático cada 4 segundos |
+| Categoría                | Funcionalidad                                                                   |
+| ------------------------ | ------------------------------------------------------------------------------- |
+| 📡 **Socket TCP**        | Ingesta síncrona de eventos JSON desde cualquier cliente TCP                    |
+| 🔌 **WebSocket**         | Difusión asíncrona en tiempo real al panel web con reconexión automática        |
+| 📧 **SMTP**              | Alertas automáticas por email para eventos `error` y `critical` con auditoría   |
+| 🗄️ **Persistencia**      | SQLite con tablas `events` + `email_alerts` y trazabilidad completa             |
+| 📊 **Dashboard**         | 5 pestañas: Dashboard · Crear evento · Eventos · Alertas email · Auditoría      |
+| 🎯 **6 KPIs**            | Total · Critical · Error · Warning · Info · Email OK/Fail con bordes semánticos |
+| 🌙 **Dark mode**         | Toggle en toolbar con persistencia en `localStorage`                            |
+| 🔔 **Toasts**            | Notificaciones contextuales: success · error · warning · info                   |
+| ⚠️ **Confirm overlay**   | Diálogo personalizado con `backdrop-filter` para acciones destructivas          |
+| 📦 **Export JSON**       | Descarga completa de eventos + alertas email + estadísticas                     |
+| 📥 **Import JSON**       | Restauración de eventos desde archivo con validación                            |
+| 🎲 **Seed de datos**     | 5 eventos de demostración inyectados con un clic                                |
+| 🔎 **Búsqueda en vivo**  | Filtro instantáneo en tablas de eventos y alertas email                         |
+| 🏷️ **Badges semánticos** | Pills de severidad (info/warning/error/critical) + badges de canal (TCP/HTTP)   |
+| 📡 **Status dot**        | Indicador de salud del backend con heartbeat automático                         |
+| 📱 **Responsive**        | 3 breakpoints: escritorio (6 KPIs) · tablet (3) · móvil (2)                     |
+| ♻️ **Auto-refresh**      | Refresco automático cada 4 segundos                                             |
 
 ---
 
@@ -80,33 +80,33 @@ El sistema recibe eventos de cualquier fuente externa (sensores, routers, script
 
 ## 📡 API REST
 
-| Método | Endpoint | Descripción |
-|--------|----------|-------------|
-| `GET` | `/api/events?limit=80` | Historial de eventos + logs de email |
-| `POST` | `/api/events` | Crear evento manual (source, severity, message) |
-| `GET` | `/api/stats` | KPIs: total, por severidad, por canal, email OK/fail |
-| `GET` | `/api/config` | Configuración de puertos WS/TCP/HTTP |
+| Método | Endpoint               | Descripción                                          |
+| ------ | ---------------------- | ---------------------------------------------------- |
+| `GET`  | `/api/events?limit=80` | Historial de eventos + logs de email                 |
+| `POST` | `/api/events`          | Crear evento manual (source, severity, message)      |
+| `GET`  | `/api/stats`           | KPIs: total, por severidad, por canal, email OK/fail |
+| `GET`  | `/api/config`          | Configuración de puertos WS/TCP/HTTP                 |
 
 ---
 
 ## 🛠️ Mejoras v2 implementadas
 
-| # | Mejora | Detalle |
-|---|--------|---------|
-| 1 | 🌙 Dark mode | Toggle + persistencia en `localStorage` |
-| 2 | 🔔 Toasts | 4 tonos: success, error, warning, info |
-| 3 | ⚠️ Confirm overlay | `nousConfirm()` con Promise y backdrop-filter |
-| 4 | 📊 Dashboard con KPIs | 6 indicadores con borde lateral semántico |
-| 5 | 📡 Status dot | Heartbeat automático cada 5s |
-| 6 | 🏷️ Badges semánticos | Pills de severidad + badges de canal TCP/HTTP |
-| 7 | 🔢 Contador de caracteres | Feedback visual al redactar mensajes |
-| 8 | 📦 Export JSON | Backup completo de eventos + emails + stats |
-| 9 | 📥 Import JSON | Restauración con validación y confirm |
-| 10 | 🎲 Seed de datos | 5 eventos demo con un clic |
-| 11 | 🔎 Búsqueda en vivo | Filtro instantáneo en eventos y alertas |
-| 12 | 📱 Responsive | 3 breakpoints: 1100px · 700px |
-| 13 | 🫙 Empty states | Mensajes informativos en tablas vacías |
-| 14 | ♻️ Auto-refresh | `setInterval` cada 4 segundos |
+| #   | Mejora                    | Detalle                                       |
+| --- | ------------------------- | --------------------------------------------- |
+| 1   | 🌙 Dark mode              | Toggle + persistencia en `localStorage`       |
+| 2   | 🔔 Toasts                 | 4 tonos: success, error, warning, info        |
+| 3   | ⚠️ Confirm overlay        | `nousConfirm()` con Promise y backdrop-filter |
+| 4   | 📊 Dashboard con KPIs     | 6 indicadores con borde lateral semántico     |
+| 5   | 📡 Status dot             | Heartbeat automático cada 5s                  |
+| 6   | 🏷️ Badges semánticos      | Pills de severidad + badges de canal TCP/HTTP |
+| 7   | 🔢 Contador de caracteres | Feedback visual al redactar mensajes          |
+| 8   | 📦 Export JSON            | Backup completo de eventos + emails + stats   |
+| 9   | 📥 Import JSON            | Restauración con validación y confirm         |
+| 10  | 🎲 Seed de datos          | 5 eventos demo con un clic                    |
+| 11  | 🔎 Búsqueda en vivo       | Filtro instantáneo en eventos y alertas       |
+| 12  | 📱 Responsive             | 3 breakpoints: 1100px · 700px                 |
+| 13  | 🫙 Empty states           | Mensajes informativos en tablas vacías        |
+| 14  | ♻️ Auto-refresh           | `setInterval` cada 4 segundos                 |
 
 ---
 
@@ -168,12 +168,12 @@ Network-Alert-Hub/
 
 ## 🧪 Stack tecnológico
 
-| Capa | Tecnología |
-|------|------------|
-| **Backend** | Python 3.12 · Flask 3.x · SQLite 3 · `socketserver.ThreadingMixIn` |
-| **WebSocket** | `websockets` (asyncio) con reconexión automática en frontend |
-| **Email** | `smtplib` (SMTP/STARTTLS) con auditoría en SQLite |
-| **Frontend** | HTML5 · CSS3 (custom properties) · JavaScript ES2022 (vanilla) |
+| Capa              | Tecnología                                                             |
+| ----------------- | ---------------------------------------------------------------------- |
+| **Backend**       | Python 3.12 · Flask 3.x · SQLite 3 · `socketserver.ThreadingMixIn`     |
+| **WebSocket**     | `websockets` (asyncio) con reconexión automática en frontend           |
+| **Email**         | `smtplib` (SMTP/STARTTLS) con auditoría en SQLite                      |
+| **Frontend**      | HTML5 · CSS3 (custom properties) · JavaScript ES2022 (vanilla)         |
 | **Protocolo TCP** | JSON de una línea: `{"source":"...","severity":"...","message":"..."}` |
 
 ---

@@ -165,10 +165,8 @@
   </main>
 
   <script>
-    window.APP_CONFIG = {
-      wsPort: {{ ws_port }},
-      tcpPort: {{ tcp_port }},
-    };
+    // eslint-disable-next-line
+    window.APP_CONFIG = JSON.parse('{{ {"wsPort": ws_port, "tcpPort": tcp_port} | tojson }}');
   </script>
   <script src="/static/app.js"></script>
 </body>

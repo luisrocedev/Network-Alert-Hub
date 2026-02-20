@@ -18,7 +18,7 @@ import websockets
 
 BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "network_events.sqlite3"
-HTTP_PORT = int(os.getenv("HUB_HTTP_PORT", "5060"))
+HTTP_PORT = int(os.getenv("HUB_HTTP_PORT", "5100"))
 WS_PORT = int(os.getenv("HUB_WS_PORT", "8767"))
 TCP_PORT = int(os.getenv("HUB_TCP_PORT", "5090"))
 
@@ -287,8 +287,11 @@ def ws_server_thread() -> None:
     asyncio.set_event_loop(loop)
 
     async def runner() -> None:
-        async with websockets.serve(ws_handler, "0.0.0.0", WS_PORT):
-            await asyncio.Future()
+        try:
+            async with websockets.serve(ws_handler, "0.0.0.0", WS_PORT):
+                await asyncio.Future()
+        except OSError as exc:
+            print(f"[WS] No se pudo iniciar en :{WS_PORT} — {exc}")
 
     loop.run_until_complete(runner())
 
