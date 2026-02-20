@@ -3,88 +3,171 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Network Alert Hub · PSP</title>
+  <title>Network Alert Hub</title>
   <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
+
+  <!-- ═══ Toast container ═══ -->
+  <div id="toastBox" class="toast-box"></div>
+
+  <!-- ═══ Confirm overlay ═══ -->
+  <div id="confirmOverlay" class="confirm-overlay hidden">
+    <div class="confirm-card">
+      <p id="confirmMsg">¿Confirmar acción?</p>
+      <div class="confirm-actions">
+        <button id="confirmYes">Aceptar</button>
+        <button id="confirmNo" class="secondary">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
   <main class="shell">
-    <section class="panel hero">
-      <div>
+
+    <!-- ═══ Hero + toolbar ═══ -->
+    <header class="panel hero">
+      <div class="hero-text">
         <h1>Network Alert Hub</h1>
-        <p>Actividad final de conexión por red con <strong>TCP sockets + WebSockets + SMTP</strong> y persistencia en SQLite.</p>
+        <p>Plataforma de monitorización de eventos con <strong>TCP · WebSocket · SMTP</strong> y persistencia SQLite.</p>
       </div>
-      <div class="badge-group">
-        <span class="badge">WS: {{ ws_port }}</span>
-        <span class="badge">TCP: {{ tcp_port }}</span>
+      <div class="toolbar">
+        <span id="statusDot" class="status-dot offline" title="Estado del backend"></span>
+        <button id="darkToggle" class="icon-btn" title="Cambiar tema">🌙</button>
+        <button id="exportBtn" class="icon-btn" title="Exportar JSON">📦</button>
+        <label class="icon-btn" title="Importar JSON">📥<input id="importFile" type="file" accept=".json" hidden /></label>
+        <button id="seedBtn" class="icon-btn" title="Seed de prueba">🎲</button>
       </div>
-    </section>
+    </header>
 
-    <section class="panel controls">
-      <h2>Crear evento manual (HTTP API)</h2>
-      <div class="grid form-grid">
-        <label>Origen
-          <input id="source" type="text" value="panel-web" maxlength="80" />
-        </label>
-        <label>Severidad
-          <select id="severity">
-            <option value="info">info</option>
-            <option value="warning">warning</option>
-            <option value="error">error</option>
-            <option value="critical">critical</option>
-          </select>
-        </label>
-      </div>
-      <label>Mensaje
-        <textarea id="message" rows="3" maxlength="300">Conexión de prueba desde panel.</textarea>
-      </label>
-      <div class="actions">
-        <button id="sendBtn">Enviar evento</button>
-        <button id="reloadBtn" class="secondary">Recargar datos</button>
-        <span id="liveState" class="live">WS desconectado</span>
-      </div>
-      <p class="hint">Tip: también puedes enviar eventos por socket TCP en formato JSON de una línea.</p>
-    </section>
+    <!-- ═══ Tabs ═══ -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="dashboard">Dashboard</button>
+      <button class="tab" data-tab="create">Crear evento</button>
+      <button class="tab" data-tab="events">Eventos</button>
+      <button class="tab" data-tab="emails">Alertas email</button>
+      <button class="tab" data-tab="audit">Auditoría</button>
+    </nav>
 
+    <!-- ═══ KPIs ═══ -->
     <section class="kpis">
-      <article class="kpi"><span>Total eventos</span><strong id="kpiTotal">0</strong></article>
-      <article class="kpi"><span>Critical</span><strong id="kpiCritical">0</strong></article>
-      <article class="kpi"><span>Error</span><strong id="kpiError">0</strong></article>
-      <article class="kpi"><span>Email OK/Fail</span><strong id="kpiEmail">0 / 0</strong></article>
+      <article class="kpi kpi-purple"><span>Total eventos</span><strong id="kpiTotal">0</strong></article>
+      <article class="kpi kpi-red"><span>Critical</span><strong id="kpiCritical">0</strong></article>
+      <article class="kpi kpi-amber"><span>Error</span><strong id="kpiError">0</strong></article>
+      <article class="kpi kpi-green"><span>Warning</span><strong id="kpiWarning">0</strong></article>
+      <article class="kpi kpi-cyan"><span>Info</span><strong id="kpiInfo">0</strong></article>
+      <article class="kpi kpi-blue"><span>Email OK / Fail</span><strong id="kpiEmail">0 / 0</strong></article>
     </section>
 
-    <section class="panel two-col">
-      <div>
-        <h2>Eventos en tiempo real</h2>
+    <!-- ═══ Tab: Dashboard ═══ -->
+    <section id="tab-dashboard" class="tab-panel active">
+      <div class="panel">
+        <h2>Resumen en tiempo real</h2>
+        <div class="dash-grid">
+          <div>
+            <h3>Últimos eventos</h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>ID</th><th>Fecha</th><th>Severidad</th><th>Canal</th><th>Mensaje</th></tr></thead>
+                <tbody id="dashEventsBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div>
+            <h3>Últimas alertas email</h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Evento</th><th>Fecha</th><th>Estado</th><th>Detalle</th></tr></thead>
+                <tbody id="dashEmailsBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ Tab: Crear evento ═══ -->
+    <section id="tab-create" class="tab-panel">
+      <div class="panel">
+        <h2>Crear evento manual (HTTP API)</h2>
+        <div class="grid form-grid">
+          <label>Origen
+            <input id="source" type="text" value="panel-web" maxlength="80" />
+          </label>
+          <label>Severidad
+            <select id="severity">
+              <option value="info">info</option>
+              <option value="warning">warning</option>
+              <option value="error">error</option>
+              <option value="critical">critical</option>
+            </select>
+          </label>
+        </div>
+        <label>Mensaje <small id="charCount" class="char-count">0 / 300</small>
+          <textarea id="message" rows="3" maxlength="300" placeholder="Describe el evento..."></textarea>
+        </label>
+        <div class="actions">
+          <button id="sendBtn">Enviar evento</button>
+          <span id="liveState" class="live">WS desconectado</span>
+        </div>
+        <p class="hint">Tip: también puedes enviar eventos por socket TCP (:{{ tcp_port }}) en formato JSON.</p>
+      </div>
+    </section>
+
+    <!-- ═══ Tab: Eventos ═══ -->
+    <section id="tab-events" class="tab-panel">
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Eventos en tiempo real</h2>
+          <input id="searchEvents" type="search" placeholder="Buscar eventos…" class="search-input" />
+        </div>
         <div class="table-wrap">
           <table>
             <thead>
-              <tr>
-                <th>ID</th><th>Fecha</th><th>Origen</th><th>Severidad</th><th>Canal</th><th>Mensaje</th>
-              </tr>
+              <tr><th>ID</th><th>Fecha</th><th>Origen</th><th>Severidad</th><th>Canal</th><th>Mensaje</th></tr>
             </thead>
             <tbody id="eventsBody"></tbody>
           </table>
         </div>
       </div>
-      <div>
-        <h2>Historial de alertas por email</h2>
+    </section>
+
+    <!-- ═══ Tab: Alertas email ═══ -->
+    <section id="tab-emails" class="tab-panel">
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Historial de alertas por email</h2>
+          <input id="searchEmails" type="search" placeholder="Buscar alertas…" class="search-input" />
+        </div>
         <div class="table-wrap">
           <table>
             <thead>
-              <tr>
-                <th>ID</th><th>Evento</th><th>Fecha</th><th>Estado</th><th>Destinatario</th><th>Detalle</th>
-              </tr>
+              <tr><th>ID</th><th>Evento</th><th>Fecha</th><th>Estado</th><th>Destinatario</th><th>Detalle</th></tr>
             </thead>
             <tbody id="emailsBody"></tbody>
           </table>
         </div>
       </div>
     </section>
+
+    <!-- ═══ Tab: Auditoría ═══ -->
+    <section id="tab-audit" class="tab-panel">
+      <div class="panel">
+        <h2>Distribución de severidades</h2>
+        <div id="auditGrid" class="audit-grid"></div>
+      </div>
+    </section>
+
+    <!-- ═══ Footer ═══ -->
+    <footer class="footer">
+      Network Alert Hub v2.0 · Luis Rodríguez Cedeño · DAM2 PSP-002
+    </footer>
+
   </main>
 
   <script>
     window.APP_CONFIG = {
       wsPort: {{ ws_port }},
+      tcpPort: {{ tcp_port }},
     };
   </script>
   <script src="/static/app.js"></script>

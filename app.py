@@ -294,8 +294,11 @@ def ws_server_thread() -> None:
 
 
 def tcp_server_thread() -> None:
-    with ThreadedTCPServer(("0.0.0.0", TCP_PORT), TCPEventHandler) as server:
-        server.serve_forever()
+    try:
+        with ThreadedTCPServer(("0.0.0.0", TCP_PORT), TCPEventHandler) as server:
+            server.serve_forever()
+    except OSError as exc:
+        print(f"[TCP] No se pudo iniciar en :{TCP_PORT} — {exc}")
 
 
 def start_background_servers() -> None:
